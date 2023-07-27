@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Image Prediction</title>
+    <link rel="stylesheet" href="./style.css">
+    <header><h1 class="header">Cancer Prediction</h1></header>
+</head>
+
+<body>
+    <section>
+        <input class="start_bnt" name="browse" type="file"  id="imageInput">
+    </section>
+    <br><br>
+    <section>
+        <button class="_bnt" onclick="predictImage()">Predict</button>
+        <div id="predictionResult"></div>
+    </section>
+
+
+    <script>
+        function predictImage() {
+            const fileInput = document.getElementById('imageInput');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select an image.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const predictionResult = document.getElementById('predictionResult');
+                    predictionResult.textContent = `Predicted Class: ${data.prediction}`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while predicting.');
+                });
+        }
+    </script>
+</body>
+
+</html>
