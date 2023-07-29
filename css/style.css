@@ -1,0 +1,37 @@
+body {
+    background-color: rgb(255, 163, 199);
+}
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ff90c6;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+.s1 {
+    background-size: cover;
+    height: 100%;
+}
+
+.img_slide1 {
+    translate: 200px 100px;
+}
+
+.about {
+    text-indent: 10%;
+    top: 40%;
+    padding-top: 30%;
+    padding-left: 8%;
+    padding-right: 8%;
+    text-align: justify;
+}
+.str_bnt{
+    align-self: center;
+    color: aliceblue;
+    background-color: #ff90c6;
+    text-align: center;
+}
