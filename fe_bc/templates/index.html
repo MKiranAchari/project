@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Breast Cancer Detection</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- font style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <header class="header_blo fixed-top ">
+        <h1>Detect the Tumor in the Breast</h1>
+    </header>
+</head>
+
+<body>
+    <section class="page_1">
+        <div class="bg_page" id="home">
+            <img src="./images/pic1.jpg" alt="pick_hands" height="100%" width="100%">
+            <div class="container-fluid bg_text ">
+                <p class="bg_text"><b>Breast cancer is one of the main causes of cancer deaths worldwide. Early
+                    diagnostics
+                    significantly increases the chances of correct treatment and survival, but this process is
+                    tedious
+                    and
+                    often leads to a disagreement between pathologists. Computer aided diagnosis systems showed
+                    potential
+                    for improving the diagnostic accuracy. But early detection and prevention can significantly
+                    reduce
+                    the
+                    chances of death. It is important to detect breast cancer as early as possible. This application
+                    is
+                    based on Convolution Neural Networks which classifies the scan as either benign or malignant
+                    tumor.</b> </p>
+                <br><br>
+                <button class="str_bnt_1" onclick="scrollToSection()"><b>Click here to Predict</b></button>
+            </div>
+        </div>
+    </section>
+    <section id="next">
+        <div class="bg_page">
+            <img src="./images/pic2.jpg" alt="pick_hands" height="100%" width="100%">
+            <h4 class="bg_text_1">Drop in the scan for Prediction</h4>
+            <p class="bg_text_2">upload scaner image</p>
+            <label for="fileInput" class="str_bnt_2"><b>Choose File to predict</b></label>
+            <input type="file" id="fileInput" style="display: none;">
+            <div class="custom-image-preview">
+                <img id="imagePreview" src="#" alt="select image">
+            </div>
+            <b><p id="predicted_output" class="pre_text"></p></b>
+    </section>
+
+
+    <!-- script -->
+    <script>
+        // page_slide
+        function scrollToSection() {
+            var section = document.getElementById("next");
+
+            var offsetTop = section.offsetTop;
+
+            window.scrollTo({
+                top: offsetTop,
+                behavior: "smooth"
+            });
+        }
+        // image_preview
+        document.getElementById("fileInput").addEventListener("change", function (event) {
+            var fileInput = event.target;
+
+            if (fileInput.files && fileInput.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var imagePreview = document.getElementById("imagePreview");
+                    imagePreview.src = e.target.result;
+                };
+
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        });
+        // prediction output
+        function predictImage() {
+            const fileInput = document.getElementById('imageInput');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select an image.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const predictionResult = document.getElementById('predicted_output');
+                    predictionResult.textContent = `Predicted Class: ${data.prediction}`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while predicting.');
+                });
+        } 
+    </script>
+
+</body>
+
+</html>
